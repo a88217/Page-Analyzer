@@ -19,11 +19,6 @@ public class App {
         return Integer.valueOf(port);
     }
 
-    private static String getDB() {
-        String database = System.getenv().getOrDefault("JDBC_DATABASE_URL", "jdbc:h2:mem:project;DB_CLOSE_DELAY=-1;");
-        return database;
-    }
-
     public static void main(String[] args) throws IOException, SQLException {
         var app = getApp();
         app.start(getPort());
@@ -32,7 +27,18 @@ public class App {
     public static Javalin getApp() throws IOException, SQLException {
 
         var hikariConfig = new HikariConfig();
-        hikariConfig.setJdbcUrl(getDB());
+        var isProd = System.getenv().getOrDefault("APP_ENV", "dev").equals("prod");
+
+        if (isProd) {
+            String username = System.getenv("JDBC_DATABASE_USERNAME");
+            String password = System.getenv("JDBC_DATABASE_PASSWORD");
+            String url = System.getenv("JDBC_DATABASE_URL");
+            hikariConfig.setJdbcUrl(url);
+            hikariConfig.setUsername(username);
+            hikariConfig.setPassword(password);
+        } else {
+            hikariConfig.setJdbcUrl("jdbc:h2:mem:project;DB_CLOSE_DELAY=-1;");
+        }
 
         var dataSource = new HikariDataSource(hikariConfig);
 
