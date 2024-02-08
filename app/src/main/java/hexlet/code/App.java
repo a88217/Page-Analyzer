@@ -40,7 +40,7 @@ public class App {
     public static Javalin getApp() throws IOException, SQLException {
 
         var hikariConfig = new HikariConfig();
-        /* var isProd = System.getenv().getOrDefault("APP_ENV", "dev").equals("prod");
+        var isProd = System.getenv().getOrDefault("APP_ENV", "dev").equals("prod");
 
         if (isProd) {
             String username = System.getenv("JDBC_DATABASE_USERNAME");
@@ -52,10 +52,10 @@ public class App {
         } else {
             hikariConfig.setJdbcUrl("jdbc:h2:mem:project;DB_CLOSE_DELAY=-1;");
         }
-        */
-        hikariConfig.setJdbcUrl(DatabaseConfig.getDbUrl());
-        hikariConfig.setUsername(DatabaseConfig.getDbUsername());
-        hikariConfig.setPassword(DatabaseConfig.getDbPassword());
+
+//        hikariConfig.setJdbcUrl(DatabaseConfig.getDbUrl());
+//        hikariConfig.setUsername(DatabaseConfig.getDbUsername());
+//        hikariConfig.setPassword(DatabaseConfig.getDbPassword());
         var dataSource = new HikariDataSource(hikariConfig);
 
         // Получаем путь до файла в src/main/resources
