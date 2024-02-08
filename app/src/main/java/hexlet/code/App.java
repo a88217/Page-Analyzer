@@ -42,20 +42,21 @@ public class App {
         var hikariConfig = new HikariConfig();
         var isProd = System.getenv().getOrDefault("APP_ENV", "dev").equals("prod");
 
-        //if (isProd) {
+        if (isProd) {
             String username = System.getenv("JDBC_DATABASE_USERNAME");
             String password = System.getenv("JDBC_DATABASE_PASSWORD");
             String url = System.getenv("JDBC_DATABASE_URL");
             hikariConfig.setJdbcUrl(url);
             hikariConfig.setUsername(username);
             hikariConfig.setPassword(password);
-        //} else {
-        //    hikariConfig.setJdbcUrl("jdbc:h2:mem:project;DB_CLOSE_DELAY=-1;");
-        //}
-
+        } else {
+            hikariConfig.setJdbcUrl("jdbc:h2:mem:project;DB_CLOSE_DELAY=-1;");
+        }
+//        Подключение к локальной БД hexlet-jdbc
 //        hikariConfig.setJdbcUrl(DatabaseConfig.getDbUrl());
 //        hikariConfig.setUsername(DatabaseConfig.getDbUsername());
 //        hikariConfig.setPassword(DatabaseConfig.getDbPassword());
+
         var dataSource = new HikariDataSource(hikariConfig);
 
         var sql = readResourceFile(SCHEMA_FILE);
