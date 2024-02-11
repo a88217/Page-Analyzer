@@ -4,6 +4,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import hexlet.code.repository.BaseRepository;
 import hexlet.code.utils.DatabaseConfig;
+import hexlet.code.utils.NamedRoutes;
 import io.javalin.Javalin;
 
 import java.io.BufferedReader;
@@ -15,13 +16,24 @@ import java.nio.file.Files;
 import java.sql.SQLException;
 import java.util.stream.Collectors;
 
+import gg.jte.ContentType;
+import gg.jte.TemplateEngine;
+import io.javalin.rendering.template.JavalinJte;
+import gg.jte.resolve.ResourceCodeResolver;
+
 public class App {
 
     private static final String SCHEMA_FILE = "schema.sql";
 
+    private static TemplateEngine createTemplateEngine() {
+        ClassLoader classLoader = App.class.getClassLoader();
+        ResourceCodeResolver codeResolver = new ResourceCodeResolver("templates", classLoader);
+        TemplateEngine templateEngine = TemplateEngine.create(codeResolver, ContentType.Html);
+        return templateEngine;
+    }
+
     private static int getPort() {
         String port = System.getenv().getOrDefault("PORT", "7070");
-
         return Integer.valueOf(port);
     }
 
@@ -72,7 +84,12 @@ public class App {
             config.plugins.enableDevLogging();
         });
 
-        app.get("/", ctx -> ctx.result("Hello World"));
+        JavalinJte.init(createTemplateEngine());
+
+        app.get("/", ctx -> {
+            ctx.render("index.jte");
+        });
+
         return app;
     }
 }
