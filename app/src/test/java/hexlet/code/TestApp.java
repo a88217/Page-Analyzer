@@ -50,4 +50,75 @@ public class TestApp {
         });
     }
 
+    @Test
+    public void testCreateUrl() throws SQLException{
+        var url = new Url("https://example.com", Time.getTime());
+        UrlRepository.save(url);
+        JavalinTest.test(app, (server, client) -> {
+            var requestBody = "url=https://example.com";
+            var response = client.post(NamedRoutes.urlsPath(), requestBody);
+            assertThat(response.code()).isEqualTo(200);
+            assertThat(response.body().string().contains("https://example.com"));
+            assertThat(UrlRepository.getEntities()).hasSize(1);
+        });
+    }
+
+    @Test
+    public void testCreateUrlWithPort() throws SQLException{
+        var url = new Url("https://example.com:8080", Time.getTime());
+        UrlRepository.save(url);
+        JavalinTest.test(app, (server, client) -> {
+            var requestBody = "url=https://example.com:8080";
+            var response = client.post(NamedRoutes.urlsPath(), requestBody);
+            assertThat(response.code()).isEqualTo(200);
+            assertThat(response.body().string().contains("https://example.com:8080"));
+            assertThat(UrlRepository.getEntities()).hasSize(1);
+        });
+    }
+
+    @Test
+    public void testCreateWrongUrl() throws SQLException{
+        var url = new Url("123456789", Time.getTime());
+        JavalinTest.test(app, (server, client) -> {
+            var requestBody = "url=123456789";
+            var response = client.post(NamedRoutes.urlsPath(), requestBody);
+            assertThat(response.code()).isEqualTo(200);
+            assertThat(response.body().string().contains("Анализатор страниц"));
+            assertThat(UrlRepository.getEntities()).hasSize(0);
+        });
+    }
+
+    @Test
+    public void testCreateExistingUrl() throws SQLException {
+        var url = new Url("https://example.com", Time.getTime());
+        UrlRepository.save(url);
+        JavalinTest.test(app, (server, client) -> {
+            var requestBody = "url=https://example.com";
+            var response = client.post(NamedRoutes.urlsPath(), requestBody);
+            assertThat(response.code()).isEqualTo(200);
+            assertThat(response.body().string().contains("https://example.com"));
+            assertThat(UrlRepository.getEntities()).hasSize(1);
+
+            var response2 = client.post(NamedRoutes.urlsPath(), requestBody);
+            assertThat(response2.code()).isEqualTo(200);
+            assertThat(UrlRepository.getEntities()).hasSize(1);
+        });
+    }
+
+    @Test
+    public void testUrlPage() throws SQLException {
+        var time = Time.getTime();
+        var url = new Url("https://example.com", time);
+        UrlRepository.save(url);
+        JavalinTest.test(app, (server, client) -> {
+            var urlId = url.getId();
+            var response = client.get(NamedRoutes.urlPath(urlId));
+            assertThat(response.code()).isEqualTo(200);
+            assertThat(response.body().string()).contains(
+                    "Сайт:", url.getName()
+            );
+            assertThat(UrlRepository.getEntities()).hasSize(1);
+        });
+    }
+
 }
