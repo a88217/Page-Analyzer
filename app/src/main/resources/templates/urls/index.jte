@@ -5,23 +5,42 @@
 @template.layout.page(
 page = page,
 content = @`
-    <main>
-        <h1>Сайты</h1>
-        @if(page.getUrls().isEmpty())
-            <p>Пока не добавлено ни одного сайта</p>
-        @else
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Имя</th>
-            </tr>
-            @for(var url : page.getUrls())
+    <section>
+
+        <div class="container-lg mt-5">
+            <h1>Сайты</h1>
+            <table class="table table-bordered table-hover mt-3">
+                <thead>
                 <tr>
-                    <td>${url.getId()}</td>
-                    <td><a href="${NamedRoutes.urlsPath()}/${url.getId()}">${url.getName()}</a></td>
+                    <th class="col-1">ID</th>
+                    <th>Имя</th>
+                    <th class="col-2">Последняя проверка</th>
+                    <th class="col-1">Код ответа</th>
                 </tr>
-            @endfor
-        </table>
-        @endif
-    </main>
+                </thead>
+
+                <tbody>
+        @for(var url : page.getUrls())
+                <tr>
+                    <td>
+                        ${url.getId()}
+                    </td>
+                    <td>
+                        <a href="${NamedRoutes.urlsPath()}/${url.getId()}">${url.getName()}</a>
+                    </td>
+                    <td>
+
+                    </td>
+                    <td>
+
+                    </td>
+
+                </tr>
+        @endfor
+                </tbody>
+            </table>
+        </div>
+
+    </section>
+
 `)

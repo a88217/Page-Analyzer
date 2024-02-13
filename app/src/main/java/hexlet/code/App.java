@@ -6,7 +6,9 @@ import hexlet.code.dto.MainPage;
 import hexlet.code.dto.urls.UrlPage;
 import hexlet.code.dto.urls.UrlsPage;
 import hexlet.code.model.Url;
+import hexlet.code.model.UrlCheck;
 import hexlet.code.repository.BaseRepository;
+import hexlet.code.repository.UrlChecksRepository;
 import hexlet.code.repository.UrlRepository;
 import hexlet.code.utils.DatabaseConfig;
 import hexlet.code.utils.NamedRoutes;
@@ -22,6 +24,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.sql.SQLException;
 import java.util.Collections;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import gg.jte.ContentType;
@@ -30,6 +35,12 @@ import io.javalin.http.NotFoundResponse;
 import io.javalin.rendering.template.JavalinJte;
 import gg.jte.resolve.ResourceCodeResolver;
 import io.javalin.validation.ValidationException;
+import kong.unirest.HttpResponse;
+import kong.unirest.JsonNode;
+import kong.unirest.Unirest;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import static hexlet.code.utils.Time.getTime;
 
@@ -50,6 +61,22 @@ public class App {
     }
 
     public static void main(String[] args) throws IOException, SQLException {
+        HttpResponse<String> jsonResponse
+                = Unirest.get("https://www.w3schools.com")
+                .asString();
+        var statusCode = jsonResponse.getStatus();
+        var body = jsonResponse.getBody();
+        Document doc = Jsoup.parse(body);
+        String title = doc.title();
+        Element h1Element = doc.selectFirst("h1");
+        String h1 = Objects.isNull(h1Element) ? "" : h1Element.text();
+        Element descriptionTag = doc.select("meta[name=description]").first();
+        String description = Objects.isNull(descriptionTag) ? "" : descriptionTag.attr("content");
+
+        System.out.println(statusCode);
+        System.out.println(title);
+        System.out.println(description);
+        System.out.println(h1);
         var app = getApp();
         app.start(getPort());
     }
@@ -146,10 +173,32 @@ public class App {
             var id = ctx.pathParamAsClass("id", Long.class).get();
             var url = UrlRepository.find(id)
                     .orElseThrow(() -> new NotFoundResponse("Entity with id = " + id + " not found"));
-            var page = new UrlPage(url);
+            var urlChecks = UrlChecksRepository.getEntities(id);
+            var page = new UrlPage(url, urlChecks);
             page.setFlash(ctx.consumeSessionAttribute("flash"));
             page.setFlashType(ctx.consumeSessionAttribute("flashType"));
             ctx.render("urls/show.jte", Collections.singletonMap("page", page));
+        });
+
+        app.post(NamedRoutes.urlCheckPath("{id}"), ctx -> {
+            var urlId = ctx.pathParamAsClass("id", Long.class).get();
+            HttpResponse<String> httpResponse
+                    = Unirest.get(UrlRepository.find(urlId).get().getName())
+                    .asString();
+            var statusCode = httpResponse.getStatus();
+            var body = httpResponse.getBody();
+            Document doc = Jsoup.parse(body);
+            String title = doc.title();
+            Element h1Element = doc.selectFirst("h1");
+            String h1 = Objects.isNull(h1Element) ? "" : h1Element.text();
+            Element descriptionTag = doc.select("meta[name=description]").first();
+            String description = Objects.isNull(descriptionTag) ? "" : descriptionTag.attr("content");
+
+            var urlCheck = new UrlCheck(statusCode, title, h1, description, urlId, getTime());
+            UrlChecksRepository.save(urlCheck);
+            ctx.sessionAttribute("flash", "Страница успешно проверена");
+            ctx.sessionAttribute("flashType", "success");
+            ctx.redirect(NamedRoutes.urlPath(urlId));
         });
 
         return app;
