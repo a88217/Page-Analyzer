@@ -4,20 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6751151f-ab10-4fde-b249-e2e459a3c2ba" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/hexlet/code/model/UrlCheck.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hexlet/code/repository/UrlChecksRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hexlet/code/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hexlet/code/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hexlet/code/dto/urls/UrlPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hexlet/code/dto/urls/UrlPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hexlet/code/utils/NamedRoutes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hexlet/code/utils/NamedRoutes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/schema.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/index.jte" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/index.jte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/layout/page.jte" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/layout/page.jte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/urls/index.jte" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/urls/index.jte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/urls/show.jte" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/urls/show.jte" afterDir="false" />
-    </list>
+    <list default="true" id="6751151f-ab10-4fde-b249-e2e459a3c2ba" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -123,7 +110,7 @@
       <recent name="$PROJECT_DIR$/src/main/resources" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.app [run]">
+  <component name="RunManager" selected="Gradle.app [test]">
     <configuration name="app [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -236,8 +223,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.app [run]" />
         <item itemvalue="Gradle.app [test]" />
+        <item itemvalue="Gradle.app [run]" />
         <item itemvalue="Gradle.app [installShadowDist]" />
         <item itemvalue="Gradle.app [clean]" />
         <item itemvalue="Gradle.app [installDist]" />
