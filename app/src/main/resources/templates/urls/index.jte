@@ -1,5 +1,6 @@
 @import hexlet.code.dto.urls.UrlsPage
 @import hexlet.code.utils.NamedRoutes
+@import hexlet.code.utils.Time
 @param UrlsPage page
 
 @template.layout.page(
@@ -20,19 +21,23 @@ content = @`
                 </thead>
 
                 <tbody>
-        @for(var url : page.getUrls())
+        @for(var entry : page.getUrls().entrySet())
                 <tr>
                     <td>
-                        ${url.getId()}
+                        ${entry.getKey().getId()}
                     </td>
                     <td>
-                        <a href="${NamedRoutes.urlsPath()}/${url.getId()}">${url.getName()}</a>
+                        <a href="${NamedRoutes.urlsPath()}/${entry.getKey().getId()}">${entry.getKey().getName()}</a>
                     </td>
                     <td>
-
+                        @if(entry.getValue().isPresent())
+                        ${Time.timeString(entry.getValue().get().getCreatedAt())}
+                        @endif
                     </td>
                     <td>
-
+                        @if(entry.getValue().isPresent())
+                        ${entry.getValue().get().getStatusCode()}
+                        @endif
                     </td>
 
                 </tr>

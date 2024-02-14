@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class UrlChecksRepository extends BaseRepository{
     public static void save(UrlCheck urlCheck) throws SQLException{
@@ -50,6 +51,28 @@ public class UrlChecksRepository extends BaseRepository{
                 result.add(urlCheck);
             }
             return result;
+        }
+    }
+
+    public static Optional<UrlCheck> getLastCheck(Long urlId) throws SQLException{
+        String sql = "SELECT * FROM url_checks WHERE url_id = ? ORDER BY id DESC LIMIT 1";
+        try (var conn = dataSource.getConnection();
+             var stmt = conn.prepareStatement(sql)) {
+            stmt.setLong(1, urlId);
+            var resultSet = stmt.executeQuery();
+            if(resultSet.next()) {
+                var id = resultSet.getLong("id");
+                var statusCode = resultSet.getInt("status_code");
+                var h1 = resultSet.getString("h1");
+                var title = resultSet.getString("title");
+                var description = resultSet.getString("description");
+                var url_id = resultSet.getLong("url_id");
+                var createdAt = resultSet.getTimestamp("created_at");
+                var urlCheck = new UrlCheck(statusCode, title, h1, description, url_id, createdAt);
+                urlCheck.setId(id);
+                return Optional.of(urlCheck);
+            }
+            return Optional.empty();
         }
     }
 }

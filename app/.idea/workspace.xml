@@ -4,7 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6751151f-ab10-4fde-b249-e2e459a3c2ba" name="Changes" comment="" />
+    <list default="true" id="6751151f-ab10-4fde-b249-e2e459a3c2ba" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/hexlet/code/controller/UrlCheckController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hexlet/code/controller/UrlController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/resources/test-page.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/resources/test-page2.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hexlet/code/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hexlet/code/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hexlet/code/dto/urls/UrlsPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hexlet/code/dto/urls/UrlsPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hexlet/code/repository/UrlChecksRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hexlet/code/repository/UrlChecksRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hexlet/code/utils/Time.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hexlet/code/utils/Time.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/urls/index.jte" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/urls/index.jte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/urls/show.jte" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/urls/show.jte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/hexlet/code/TestApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/hexlet/code/TestApp.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -74,6 +88,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -90,6 +105,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
     "Gradle.app [:App.main()].executor": "Run",
     "Gradle.app [clean].executor": "Run",
     "Gradle.app [installDist].executor": "Run",

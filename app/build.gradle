@@ -26,9 +26,11 @@ dependencies {
     // https://mvnrepository.com/artifact/com.konghq/unirest-java
     implementation group: 'com.konghq', name: 'unirest-java', version: '3.14.5'
     implementation 'org.jsoup:jsoup:1.17.2'
+
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation 'org.assertj:assertj-core:3.25.1'
+    testImplementation group: 'com.squareup.okhttp3', name: 'mockwebserver', version: '4.11.0'
 
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
