@@ -21,22 +21,22 @@ content = @`
                 </thead>
 
                 <tbody>
-        @for(var entry : page.getUrls().entrySet())
+        @for(var url : page.getUrls())
                 <tr>
                     <td>
-                        ${entry.getKey().getId()}
+                        ${url.getId()}
                     </td>
                     <td>
-                        <a href="${NamedRoutes.urlsPath()}/${entry.getKey().getId()}">${entry.getKey().getName()}</a>
+                        <a href="${NamedRoutes.urlsPath()}/${url.getId()}">${url.getName()}</a>
                     </td>
                     <td>
-                        @if(entry.getValue().isPresent())
-                        ${Time.timeString(entry.getValue().get().getCreatedAt())}
+                        @if(page.getLatestChecks().get(url.getId()) != null)
+                        ${Time.timeString(page.getLatestChecks().get(url.getId()).getCreatedAt())}
                         @endif
                     </td>
                     <td>
-                        @if(entry.getValue().isPresent())
-                        ${entry.getValue().get().getStatusCode()}
+                        @if(page.getLatestChecks().get(url.getId()) != null)
+                        ${page.getLatestChecks().get(url.getId()).getStatusCode()}
                         @endif
                     </td>
 

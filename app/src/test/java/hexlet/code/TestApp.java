@@ -13,8 +13,6 @@ import java.nio.file.Paths;
 import java.sql.SQLException;
 import io.javalin.Javalin;
 import io.javalin.testtools.JavalinTest;
-
-import static hexlet.code.utils.Time.getTime;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -53,7 +51,7 @@ public class TestApp {
 
     @Test
     public void testShowUrlById() throws SQLException {
-        var url = new Url("https://javalinTest.io", getTime());
+        var url = new Url("https://javalinTest.io");
         UrlRepository.save(url);
 
         JavalinTest.test(app, (server, client) -> {
@@ -84,7 +82,7 @@ public class TestApp {
 
     @Test
     public void testUniqUrlValidation() throws SQLException {
-        var url = new Url("https://javalintest.io", getTime());
+        var url = new Url("https://javalintest.io");
         UrlRepository.save(url);
 
         JavalinTest.test(app, (server, client) -> {
@@ -97,7 +95,7 @@ public class TestApp {
 
     @Test
     public void testCheckShowUrl() throws SQLException {
-        var url = new Url("https://javalintest.io", getTime());
+        var url = new Url("https://javalintest.io");
         UrlRepository.save(url);
 
         JavalinTest.test(app, (server, client) -> {
@@ -117,7 +115,7 @@ public class TestApp {
 
         mockWebServer.enqueue(mockResponse);
         var urlName = mockWebServer.url("/testParsingResponse");
-        var url = new Url(urlName.toString(), getTime());
+        var url = new Url(urlName.toString());
         UrlRepository.save(url);
 
         JavalinTest.test(app, (server, client) -> {
@@ -138,7 +136,7 @@ public class TestApp {
                 .setBody(Files.readString(Paths.get("./src/test/resources/test-page_2.html")));
         mockWebServer.enqueue(mockResponse);
         var urlName = mockWebServer.url("/testStoreResponse");
-        var url = new Url(urlName.toString(), getTime());
+        var url = new Url(urlName.toString());
         UrlRepository.save(url);
 
         JavalinTest.test(app, (server, client) -> {
@@ -154,7 +152,7 @@ public class TestApp {
             assertThat(response.body().string()).contains(url.getName());
 
             var actualCheckUrl = UrlChecksRepository
-                    .getLastCheck(url.getId()).get();
+                    .findLatestChecks().get(url.getId());
 
             assertThat(actualCheckUrl).isNotNull();
             assertThat(actualCheckUrl.getStatusCode()).isEqualTo(200);

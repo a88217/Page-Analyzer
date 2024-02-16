@@ -1,15 +1,14 @@
 package hexlet.code.repository;
 
-import hexlet.code.model.Url;
 import hexlet.code.model.UrlCheck;
-
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
+import static hexlet.code.utils.Time.getTime;
 
 public class UrlChecksRepository extends BaseRepository{
+
     public static void save(UrlCheck urlCheck) throws SQLException{
         String sql = "INSERT INTO url_checks (url_id, status_code, h1, title, description, created_at) VALUES (?, ?, ?, ?, ?, ?)";
         try (var conn = dataSource.getConnection();
@@ -19,7 +18,7 @@ public class UrlChecksRepository extends BaseRepository{
             preparedStatement.setString(3, urlCheck.getH1());
             preparedStatement.setString(4, urlCheck.getTitle());
             preparedStatement.setString(5, urlCheck.getDescription());
-            preparedStatement.setTimestamp(6, urlCheck.getCreatedAt());
+            preparedStatement.setTimestamp(6, getTime());
             preparedStatement.executeUpdate();
             var generatedKeys = preparedStatement.getGeneratedKeys();
             // Устанавливаем ID в сохраненную сущность
@@ -46,33 +45,36 @@ public class UrlChecksRepository extends BaseRepository{
                 var description = resultSet.getString("description");
                 var url_id = resultSet.getLong("url_id");
                 var createdAt = resultSet.getTimestamp("created_at");
-                var urlCheck = new UrlCheck(statusCode, title, h1, description, url_id, createdAt);
+                var urlCheck = new UrlCheck(statusCode, title, h1, description, url_id);
                 urlCheck.setId(id);
+                urlCheck.setCreatedAt(createdAt);
                 result.add(urlCheck);
             }
             return result;
         }
     }
 
-    public static Optional<UrlCheck> getLastCheck(Long urlId) throws SQLException{
-        String sql = "SELECT * FROM url_checks WHERE url_id = ? ORDER BY id DESC LIMIT 1";
+    public static Map<Long, UrlCheck> findLatestChecks() throws SQLException {
+        var sql = "SELECT DISTINCT ON (url_id) * FROM url_checks ORDER BY url_id DESC, id DESC";
         try (var conn = dataSource.getConnection();
              var stmt = conn.prepareStatement(sql)) {
-            stmt.setLong(1, urlId);
             var resultSet = stmt.executeQuery();
-            if(resultSet.next()) {
+            var result = new HashMap<Long, UrlCheck>();
+            while (resultSet.next()) {
                 var id = resultSet.getLong("id");
+                var urlId = resultSet.getLong("url_id");
                 var statusCode = resultSet.getInt("status_code");
-                var h1 = resultSet.getString("h1");
                 var title = resultSet.getString("title");
+                var h1 = resultSet.getString("h1");
                 var description = resultSet.getString("description");
-                var url_id = resultSet.getLong("url_id");
                 var createdAt = resultSet.getTimestamp("created_at");
-                var urlCheck = new UrlCheck(statusCode, title, h1, description, url_id, createdAt);
-                urlCheck.setId(id);
-                return Optional.of(urlCheck);
+                var check = new UrlCheck(statusCode, title, h1, description, urlId);
+                check.setId(id);
+                check.setCreatedAt(createdAt);
+                result.put(urlId, check);
             }
-            return Optional.empty();
+            return result;
         }
     }
+
 }
