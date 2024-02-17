@@ -14,8 +14,8 @@ import java.util.HashMap;
 public class UrlChecksRepository extends BaseRepository {
 
     public static void save(UrlCheck urlCheck) throws SQLException {
-        String sql = "INSERT INTO url_checks (url_id, status_code, h1, title, description, created_at) " +
-                "VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO url_checks (url_id, status_code, h1, title, description, created_at) "
+                + "VALUES (?, ?, ?, ?, ?, ?)";
         var date = new Date();
         var time = new Timestamp(date.getTime());
         try (var conn = dataSource.getConnection();
