@@ -1,7 +1,9 @@
 @import hexlet.code.dto.urls.UrlPage
 @import hexlet.code.utils.NamedRoutes
-@import hexlet.code.utils.Time
+@import java.time.format.DateTimeFormatter
 @param UrlPage page
+
+!{var formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");}
 
 @template.layout.page(
 page = page,
@@ -24,7 +26,7 @@ content = @`
                 </tr>
                 <tr>
                     <td>Дата создания</td>
-                    <td>${Time.timeString(page.getUrl().getCreatedAt())}</td>
+                    <td>${page.getUrl().getCreatedAt().toLocalDateTime().format(formatter)}</td>
                 </tr>
                 </tbody>
             </table>
@@ -62,7 +64,7 @@ content = @`
                         ${urlCheck.getDescription()}
                     </td>
                     <td>
-                        ${Time.timeString(urlCheck.getCreatedAt())}
+                        ${urlCheck.getCreatedAt().toLocalDateTime().format(formatter)}
                     </td>
                 </tr>
     @endfor

@@ -7,17 +7,19 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import static hexlet.code.utils.Time.getTime;
+import java.util.Date;
+import java.sql.Timestamp;
 
 public class UrlRepository extends BaseRepository{
 
     public static void save(Url url) throws SQLException {
         String sql = "INSERT INTO urls (name, created_at) VALUES (?, ?)";
+        var date = new Date();
+        var time = new Timestamp(date.getTime());
         try (var conn = dataSource.getConnection();
              var preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, url.getName());
-            preparedStatement.setTimestamp(2, getTime());
+            preparedStatement.setTimestamp(2, time);
             preparedStatement.executeUpdate();
             var generatedKeys = preparedStatement.getGeneratedKeys();
             if (generatedKeys.next()) {

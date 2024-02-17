@@ -1,7 +1,9 @@
 @import hexlet.code.dto.urls.UrlsPage
 @import hexlet.code.utils.NamedRoutes
-@import hexlet.code.utils.Time
+@import java.time.format.DateTimeFormatter
 @param UrlsPage page
+
+!{var formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");}
 
 @template.layout.page(
 page = page,
@@ -31,7 +33,7 @@ content = @`
                     </td>
                     <td>
                         @if(page.getLatestChecks().get(url.getId()) != null)
-                        ${Time.timeString(page.getLatestChecks().get(url.getId()).getCreatedAt())}
+                        ${page.getLatestChecks().get(url.getId()).getCreatedAt().toLocalDateTime().format(formatter)}
                         @endif
                     </td>
                     <td>

@@ -53,7 +53,7 @@ ${content}
     <div class="container-xl">
         <div class="text-center">
             created by
-            <a href="https://ru.hexlet.io" target="_blank">Hexlet</a>
+            <a href="https://github.com/a88217" target="_blank">Aleksandr Muzalev</a>
         </div>
     </div>
 </footer>

@@ -36,6 +36,10 @@ public class App {
         return Integer.valueOf(port);
     }
 
+    private static String getDatabaseUrl() {
+        return System.getenv().getOrDefault("JDBC_DATABASE_URL", "jdbc:h2:mem:project");
+    }
+
     public static void main(String[] args) throws IOException, SQLException {
         var app = getApp();
         app.start(getPort());
@@ -52,17 +56,16 @@ public class App {
 
         var hikariConfig = new HikariConfig();
         var isProd = System.getenv().getOrDefault("APP_ENV", "dev").equals("prod");
+        hikariConfig.setJdbcUrl(getDatabaseUrl());
 
         if (isProd) {
             String username = System.getenv("JDBC_DATABASE_USERNAME");
             String password = System.getenv("JDBC_DATABASE_PASSWORD");
-            String url = System.getenv("JDBC_DATABASE_URL");
-            hikariConfig.setJdbcUrl(url);
             hikariConfig.setUsername(username);
             hikariConfig.setPassword(password);
-        } else {
-            hikariConfig.setJdbcUrl("jdbc:h2:mem:project;DB_CLOSE_DELAY=-1;");
         }
+
+
 //        Подключение к локальной БД hexlet-jdbc
 //        hikariConfig.setJdbcUrl(DatabaseConfig.getDbUrl());
 //        hikariConfig.setUsername(DatabaseConfig.getDbUsername());

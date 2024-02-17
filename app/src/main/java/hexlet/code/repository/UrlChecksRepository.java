@@ -4,13 +4,15 @@ import hexlet.code.model.UrlCheck;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
-
-import static hexlet.code.utils.Time.getTime;
+import java.util.Date;
+import java.sql.Timestamp;
 
 public class UrlChecksRepository extends BaseRepository{
 
     public static void save(UrlCheck urlCheck) throws SQLException{
         String sql = "INSERT INTO url_checks (url_id, status_code, h1, title, description, created_at) VALUES (?, ?, ?, ?, ?, ?)";
+        var date = new Date();
+        var time = new Timestamp(date.getTime());
         try (var conn = dataSource.getConnection();
              var preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setLong(1, urlCheck.getUrlId());
@@ -18,10 +20,9 @@ public class UrlChecksRepository extends BaseRepository{
             preparedStatement.setString(3, urlCheck.getH1());
             preparedStatement.setString(4, urlCheck.getTitle());
             preparedStatement.setString(5, urlCheck.getDescription());
-            preparedStatement.setTimestamp(6, getTime());
+            preparedStatement.setTimestamp(6, time);
             preparedStatement.executeUpdate();
             var generatedKeys = preparedStatement.getGeneratedKeys();
-            // Устанавливаем ID в сохраненную сущность
             if (generatedKeys.next()) {
                 urlCheck.setId(generatedKeys.getLong(1));
             } else {
