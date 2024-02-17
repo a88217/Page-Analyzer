@@ -24,6 +24,7 @@ Before using this application you must install and configure:
 - JDK 20;
 - Gradle 8.2
 
+
 ### Run
 ```bash
 ./gradlew run
