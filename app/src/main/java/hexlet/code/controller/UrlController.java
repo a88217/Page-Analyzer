@@ -9,7 +9,11 @@ import hexlet.code.repository.UrlRepository;
 import hexlet.code.utils.NamedRoutes;
 import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
+
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Map;
@@ -38,19 +42,19 @@ public class UrlController {
 
     public static void create(Context ctx) throws SQLException {
         var inputUrl = ctx.formParam("url");
-        URI parsedUrl;
+        URL parsedUrl;
         try {
-            parsedUrl = new URI(inputUrl);
-        } catch (Exception e) {
+            parsedUrl = new URI(inputUrl).toURL();
+        } catch (URISyntaxException | IllegalArgumentException | MalformedURLException e) {
             ctx.sessionAttribute("flash", "Некорректный URL");
-            ctx.sessionAttribute("flashType", "danger");
+            ctx.sessionAttribute("flashType", "error");
             ctx.redirect(NamedRoutes.rootPath());
             return;
         }
         String normalizedUrl = String
                 .format(
                         "%s://%s%s",
-                        parsedUrl.getScheme(),
+                        parsedUrl.getProtocol(),
                         parsedUrl.getHost(),
                         parsedUrl.getPort() == -1 ? "" : ":" + parsedUrl.getPort()
                 )

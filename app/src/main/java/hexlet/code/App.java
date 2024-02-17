@@ -4,6 +4,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import hexlet.code.controller.UrlCheckController;
 import hexlet.code.controller.UrlController;
+import hexlet.code.dto.MainPage;
 import hexlet.code.repository.BaseRepository;
 import hexlet.code.utils.NamedRoutes;
 import io.javalin.Javalin;
@@ -12,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.stream.Collectors;
 import gg.jte.ContentType;
 import gg.jte.TemplateEngine;
@@ -84,7 +86,10 @@ public class App {
         JavalinJte.init(createTemplateEngine());
 
         app.get(NamedRoutes.rootPath(), ctx -> {
-            ctx.render("index.jte");
+            var page = new MainPage();
+            page.setFlash(ctx.consumeSessionAttribute("flash"));
+            page.setFlashType(ctx.consumeSessionAttribute("flashType"));
+            ctx.render("index.jte", Collections.singletonMap("page", page));
         });
 
         app.post(NamedRoutes.urlsPath(), UrlController::create);
