@@ -65,12 +65,6 @@ public class App {
             hikariConfig.setPassword(password);
         }
 
-
-//        Подключение к локальной БД hexlet-jdbc
-//        hikariConfig.setJdbcUrl(DatabaseConfig.getDbUrl());
-//        hikariConfig.setUsername(DatabaseConfig.getDbUsername());
-//        hikariConfig.setPassword(DatabaseConfig.getDbPassword());
-
         var dataSource = new HikariDataSource(hikariConfig);
 
         var sql = readResourceFile(SCHEMA_FILE);

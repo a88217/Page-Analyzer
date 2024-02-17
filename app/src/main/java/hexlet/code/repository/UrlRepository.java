@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.Date;
 import java.sql.Timestamp;
 
-public class UrlRepository extends BaseRepository{
+public class UrlRepository extends BaseRepository {
 
     public static void save(Url url) throws SQLException {
         String sql = "INSERT INTO urls (name, created_at) VALUES (?, ?)";
@@ -30,7 +30,7 @@ public class UrlRepository extends BaseRepository{
         }
     }
 
-    public static boolean isPresence(String url) throws SQLException{
+    public static boolean isPresence(String url) throws SQLException {
         String sql = "SELECT * FROM urls WHERE name = ?";
         try (var conn = dataSource.getConnection();
              var stmt = conn.prepareStatement(sql)) {
@@ -40,7 +40,7 @@ public class UrlRepository extends BaseRepository{
         }
     }
 
-    public static Optional<Url> find(Long id) throws SQLException{
+    public static Optional<Url> find(Long id) throws SQLException {
         String sql = "SELECT * FROM urls WHERE id = ?";
         try (var conn = dataSource.getConnection();
              var stmt = conn.prepareStatement(sql)) {
@@ -58,7 +58,7 @@ public class UrlRepository extends BaseRepository{
         }
     }
 
-    public static List<Url> getEntities() throws SQLException{
+    public static List<Url> getEntities() throws SQLException {
         String sql = "SELECT * FROM urls";
         try (var conn = dataSource.getConnection();
              var stmt = conn.prepareStatement(sql)) {
